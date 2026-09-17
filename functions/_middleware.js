@@ -8,7 +8,8 @@ export const onRequest = async (context) => {
     return Response.redirect(`https://robertegert.com${url.pathname}${url.search}`, 301);
   }
 
-  if (url.pathname.startsWith('/api/') && url.pathname !== '/api/auth/login') {
+  const publicPaths = ['/api/auth/login', '/api/health'];
+  if (url.pathname.startsWith('/api/') && !publicPaths.includes(url.pathname)) {
     const auth = request.headers.get('Authorization');
     if (!auth || !auth.startsWith('Bearer ')) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {

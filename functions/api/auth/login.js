@@ -12,6 +12,13 @@ function timeSafeEqual(a, b) {
 export async function onRequestPost({ request, env }) {
   const { password } = await request.json();
 
+  if (!env.ADMIN_PASSWORD) {
+    return new Response(JSON.stringify({ error: 'Admin password not configured' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   if (!password || !timeSafeEqual(password, env.ADMIN_PASSWORD)) {
     await new Promise(r => setTimeout(r, 500));
     return new Response(JSON.stringify({ error: 'Invalid password' }), {
