@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin - Robert Egert Studio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="login-screen" class="login-screen">
+    <div class="login-box">
+      <h1>Robert Egert Studio</h1>
+      <p>Content Administration</p>
+      <input type="password" id="password-input" placeholder="Enter password" autofocus>
+      <button id="login-btn" class="btn primary" style="width:100%">Log In</button>
+      <div id="login-error" class="error-msg hidden"></div>
+    </div>
+  </div>
+
+  <div id="admin-app" class="hidden">
+    <header class="admin-header">
+      <span class="admin-title">Robert Egert Studio</span>
+      <nav class="admin-nav">
+        <button class="nav-btn active" data-section="add-image">Add Image</button>
+        <button class="nav-btn" data-section="projects">Projects</button>
+        <button class="nav-btn" data-section="publish">Publish</button>
+      </nav>
+      <button id="btn-logout" class="btn-logout">Log out</button>
+    </header>
+
+    <!-- ADD IMAGE SECTION -->
+    <section id="sec-add-image" class="section active">
+      <div class="section-header">
+        <h2>Add Image to Collection</h2>
+      </div>
+
+      <div class="upload-form">
+        <div class="field">
+          <label>Collection</label>
+          <select id="upload-project">
+            <option value="">Loading collections...</option>
+          </select>
+        </div>
+
+        <div id="drop-zone" class="drop-zone">
+          <div class="drop-zone-text">
+            <strong>Choose a file</strong> or drag it here<br>
+            <small>JPEG, 2000px longest side, quality 80</small>
+          </div>
+          <input type="file" id="file-input" accept=".jpg,.jpeg">
+        </div>
+
+        <div id="image-preview" class="image-preview hidden">
+          <img id="preview-img" alt="Preview">
+          <div id="file-info" class="file-info"></div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>Title</label>
+            <input type="text" id="img-title" placeholder="Title of work">
+          </div>
+          <div class="field">
+            <label>Medium</label>
+            <input type="text" id="img-medium" value="Oil on canvas">
+          </div>
+        </div>
+
+        <div class="field-row-3">
+          <div class="field">
+            <label>Dimensions</label>
+            <input type="text" id="img-dimensions" placeholder="24 x 36 inches">
+          </div>
+          <div class="field">
+            <label>Date</label>
+            <input type="text" id="img-date" value="2026">
+          </div>
+          <div class="field">
+            <label>Collection (optional)</label>
+            <input type="text" id="img-collection" placeholder="Private collection">
+          </div>
+        </div>
+
+        <div style="margin-top: 8px;">
+          <button id="btn-upload" class="btn primary btn-lg" disabled>Add to Collection</button>
+        </div>
+
+        <div id="upload-error" class="error-msg hidden"></div>
+      </div>
+    </section>
+
+    <!-- PROJECTS SECTION -->
+    <section id="sec-projects" class="section hidden">
+      <div class="section-header">
+        <h2>Collections</h2>
+      </div>
+      <div id="project-list" class="project-list"></div>
+    </section>
+
+    <!-- PUBLISH SECTION -->
+    <section id="sec-publish" class="section hidden">
+      <div class="section-header">
+        <h2>Publish Changes</h2>
+      </div>
+
+      <div class="publish-card">
+        <div id="publish-status" class="publish-status">
+          Checking status...
+        </div>
+        <div id="publish-actions" class="publish-actions hidden"></div>
+      </div>
+    </section>
+
+    <div id="toast" class="toast hidden"></div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

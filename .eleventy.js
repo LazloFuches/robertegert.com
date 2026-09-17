@@ -11,6 +11,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/_redirects");
   eleventyConfig.addPassthroughCopy("src/_headers");
   eleventyConfig.addPassthroughCopy("src/llms.txt");
+  eleventyConfig.addPassthroughCopy("src/admin");
 
   const imageProfiles = {
     thumbnail: {
