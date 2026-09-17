@@ -1,4 +1,4 @@
-import { getFile } from '../lib/github.js';
+import { getFile } from '../_lib/github.js';
 
 export async function onRequestGet({ env }) {
   try {

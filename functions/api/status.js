@@ -1,4 +1,4 @@
-import { compareBranches, listPRs } from '../lib/github.js';
+import { compareBranches, listPRs } from '../_lib/github.js';
 
 export async function onRequestGet({ env }) {
   try {

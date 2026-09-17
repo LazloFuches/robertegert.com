@@ -1,4 +1,4 @@
-import { signJWT } from '../../lib/jwt.js';
+import { signJWT } from '../../_lib/jwt.js';
 
 function timeSafeEqual(a, b) {
   if (a.length !== b.length) return false;

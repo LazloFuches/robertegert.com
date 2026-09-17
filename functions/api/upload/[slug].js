@@ -1,5 +1,5 @@
-import { getFile, listDirectory, createAtomicCommit } from '../../lib/github.js';
-import { parseYamlFrontmatter, buildNjkContent } from '../../lib/njk.js';
+import { getFile, listDirectory, createAtomicCommit } from '../../_lib/github.js';
+import { parseYamlFrontmatter, buildNjkContent } from '../../_lib/njk.js';
 
 function arrayBufferToBase64(buffer) {
   const bytes = new Uint8Array(buffer);

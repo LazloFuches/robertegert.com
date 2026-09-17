@@ -1,4 +1,4 @@
-import { createPR, mergePR, listPRs } from '../lib/github.js';
+import { createPR, mergePR, listPRs } from '../_lib/github.js';
 
 export async function onRequestPost({ request, env }) {
   try {

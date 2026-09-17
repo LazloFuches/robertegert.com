@@ -1,5 +1,5 @@
-import { getFile } from '../../lib/github.js';
-import { parseYamlFrontmatter, buildNjkContent } from '../../lib/njk.js';
+import { getFile } from '../../_lib/github.js';
+import { parseYamlFrontmatter, buildNjkContent } from '../../_lib/njk.js';
 
 export async function onRequestGet({ env, params }) {
   const { slug } = params;
