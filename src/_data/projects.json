@@ -27,21 +27,21 @@
     "section": "catalogue"
   },
   {
-    "title": "Anthropocene",
-    "slug": "anthropocene",
-    "year": "2017",
-    "studio": "NY, NY",
-    "thumbnail": "/assets/images/anthropocene/thumb.jpg",
-    "count": 15,
-    "section": "catalogue"
-  },
-  {
     "title": "Cliffs",
     "slug": "cliffs",
     "year": "2020",
     "studio": "In Situ",
     "thumbnail": "/assets/images/cliffs/thumb.jpg",
     "count": 12,
+    "section": "catalogue"
+  },
+  {
+    "title": "Anthropocene",
+    "slug": "anthropocene",
+    "year": "2017",
+    "studio": "NY, NY",
+    "thumbnail": "/assets/images/anthropocene/thumb.jpg",
+    "count": 15,
     "section": "catalogue"
   },
   {
