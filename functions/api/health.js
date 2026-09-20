@@ -5,6 +5,8 @@ export async function onRequestGet({ env }) {
     hasJwtSecret: !!env.JWT_SECRET,
     hasGithubToken: !!env.GITHUB_TOKEN,
     hasGithubRepo: !!env.GITHUB_REPO,
+    envKeys: Object.keys(env),
+    envType: typeof env,
   }), {
     headers: { 'Content-Type': 'application/json' },
   });
