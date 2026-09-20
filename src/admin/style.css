@@ -211,33 +211,180 @@ body {
   margin-top: 8px;
 }
 
-/* PROJECT LIST */
-.project-list { display: flex; flex-direction: column; gap: 6px; margin-top: 16px; }
+/* COLLECTION LIST */
+.collection-list { display: flex; flex-direction: column; gap: 6px; margin-top: 16px; }
 
-.project-item {
+.collection-item {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 12px 16px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.collection-item:hover { border-color: var(--blue); }
+
+.collection-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
-.project-item-info { flex: 1; }
-.project-item-title { font-weight: 600; font-size: 14px; }
-.project-item-meta { font-size: 12px; color: var(--text-light); }
-.project-item-badge {
+.collection-item-info { flex: 1; min-width: 0; }
+.collection-item-title { font-weight: 600; font-size: 14px; }
+.collection-item-meta { font-size: 12px; color: var(--text-light); }
+.collection-item-badge {
   font-size: 11px;
   padding: 2px 8px;
   border-radius: 4px;
   background: #e8e8ed;
   color: var(--text-light);
+  flex-shrink: 0;
 }
-.project-item-badge.current {
+.collection-item-badge.current {
   background: var(--green-bg);
   color: var(--green);
 }
+
+.reorder-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.reorder-btn {
+  background: #e8e8ed;
+  border: none;
+  border-radius: 4px;
+  width: 26px;
+  height: 20px;
+  font-size: 11px;
+  cursor: pointer;
+  line-height: 1;
+  color: var(--text-light);
+}
+.reorder-btn:hover:not(:disabled) { background: var(--blue); color: #fff; }
+.reorder-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+
+/* NEW COLLECTION FORM */
+.new-collection-form {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.slug-preview { color: var(--text-light); font-size: 12px; }
+
+.form-actions { display: flex; gap: 8px; margin-top: 4px; }
+
+/* COLLECTION DETAIL */
+.detail-back { margin-bottom: 16px; }
+.detail-back a {
+  color: var(--blue);
+  text-decoration: none;
+  font-size: 14px;
+}
+.detail-back a:hover { text-decoration: underline; }
+
+.collection-meta-form {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  margin-bottom: 24px;
+}
+
+.detail-images { display: flex; flex-direction: column; gap: 8px; }
+
+.image-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.image-card.is-thumbnail { border-color: var(--blue); border-width: 2px; }
+
+.image-card-thumb {
+  width: 100px;
+  height: 100px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.image-card-body { flex: 1; min-width: 0; font-size: 13px; }
+.image-card-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+.image-card-meta { color: var(--text-light); line-height: 1.6; }
+
+.image-card-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.image-card-actions .btn { padding: 4px 10px; font-size: 12px; }
+
+.image-card .reorder-btns { align-self: center; }
+
+.image-edit-fields { margin-top: 8px; }
+.image-edit-fields .field { margin-bottom: 8px; }
+.image-edit-fields input {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: var(--font);
+}
+.image-edit-fields label { font-size: 10px; }
+
+/* EPHEMERA */
+.ephemera-list { display: flex; flex-direction: column; gap: 6px; }
+
+.ephemera-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.ephemera-item-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.ephemera-item-info { flex: 1; }
+.ephemera-item-title { font-weight: 600; font-size: 13px; }
+.ephemera-item-meta { font-size: 12px; color: var(--text-light); }
+
+.field textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: var(--font);
+  resize: vertical;
+}
+.field textarea:focus { outline: none; border-color: var(--blue); }
 
 /* PUBLISH SECTION */
 .publish-card {

@@ -110,6 +110,13 @@ export async function mergePR(env, pullNumber) {
   });
 }
 
+export async function deleteFile(env, path, sha, message, branch = 'dev') {
+  return gh(env, `${repo(env)}/contents/${path}`, {
+    method: 'DELETE',
+    body: JSON.stringify({ message, sha, branch }),
+  });
+}
+
 export async function listPRs(env, head, base, state = 'open') {
   return gh(env, `${repo(env)}/pulls?head=${env.GITHUB_REPO.split('/')[0]}:${head}&base=${base}&state=${state}`);
 }

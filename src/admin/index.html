@@ -23,7 +23,8 @@
       <span class="admin-title">Robert Egert Studio</span>
       <nav class="admin-nav">
         <button class="nav-btn active" data-section="add-image">Add Image</button>
-        <button class="nav-btn" data-section="projects">Projects</button>
+        <button class="nav-btn" data-section="collections">Collections</button>
+        <button class="nav-btn" data-section="ephemera">Ephemera</button>
         <button class="nav-btn" data-section="publish">Publish</button>
       </nav>
       <button id="btn-logout" class="btn-logout">Log out</button>
@@ -90,12 +91,144 @@
       </div>
     </section>
 
-    <!-- PROJECTS SECTION -->
-    <section id="sec-projects" class="section hidden">
+    <!-- COLLECTIONS LIST SECTION -->
+    <section id="sec-collections" class="section hidden">
       <div class="section-header">
         <h2>Collections</h2>
+        <button id="btn-new-collection" class="btn primary btn-sm">New Collection</button>
       </div>
-      <div id="project-list" class="project-list"></div>
+
+      <div id="new-collection-form" class="new-collection-form hidden">
+        <div class="field-row">
+          <div class="field" style="flex:2">
+            <label>Title</label>
+            <input type="text" id="new-coll-title" placeholder="Collection title">
+            <small id="new-coll-slug" class="slug-preview"></small>
+          </div>
+          <div class="field">
+            <label>Year</label>
+            <input type="text" id="new-coll-year" value="2026">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Studio</label>
+            <input type="text" id="new-coll-studio" placeholder="City, ST">
+          </div>
+          <div class="field">
+            <label>Section</label>
+            <select id="new-coll-section">
+              <option value="current">Current Work</option>
+              <option value="catalogue" selected>Catalogue</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button id="btn-create-collection" class="btn primary btn-sm">Create</button>
+          <button id="btn-cancel-new-collection" class="btn btn-sm">Cancel</button>
+        </div>
+      </div>
+
+      <div id="collection-list" class="collection-list"></div>
+    </section>
+
+    <!-- COLLECTION DETAIL SECTION -->
+    <section id="sec-collection-detail" class="section hidden">
+      <div class="detail-back">
+        <a href="#" id="btn-back-to-collections">&larr; Back to Collections</a>
+      </div>
+
+      <div class="collection-meta-form">
+        <div class="field-row">
+          <div class="field" style="flex:2">
+            <label>Title</label>
+            <input type="text" id="detail-title">
+          </div>
+          <div class="field">
+            <label>Year</label>
+            <input type="text" id="detail-year">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Studio</label>
+            <input type="text" id="detail-studio">
+          </div>
+          <div class="field">
+            <label>Section</label>
+            <select id="detail-section">
+              <option value="current">Current Work</option>
+              <option value="catalogue">Catalogue</option>
+            </select>
+          </div>
+        </div>
+        <button id="btn-save-collection-meta" class="btn primary btn-sm">Save Details</button>
+      </div>
+
+      <h3 id="detail-image-heading">Images</h3>
+      <div id="detail-images" class="detail-images"></div>
+    </section>
+
+    <!-- EPHEMERA SECTION -->
+    <section id="sec-ephemera" class="section hidden">
+      <div class="section-header">
+        <h2>Ephemera</h2>
+      </div>
+
+      <div class="upload-form">
+        <div class="field-row">
+          <div class="field">
+            <label>Type</label>
+            <select id="eph-type">
+              <option>Announcement</option>
+              <option>Photograph</option>
+              <option>Installation Photo</option>
+              <option>Feature</option>
+              <option>Catalogue</option>
+              <option>Essay</option>
+              <option>Review</option>
+              <option>Press Release</option>
+              <option>Profile</option>
+              <option>Interview</option>
+              <option>Poster</option>
+            </select>
+          </div>
+          <div class="field" style="flex:2">
+            <label>Title</label>
+            <input type="text" id="eph-title" placeholder="Title">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Date</label>
+          <input type="text" id="eph-date" placeholder="Venue, City, 2026">
+        </div>
+
+        <div class="field">
+          <label>Description</label>
+          <textarea id="eph-description" rows="3" placeholder="Brief description"></textarea>
+        </div>
+
+        <div id="eph-drop-zone" class="drop-zone">
+          <div class="drop-zone-text">
+            <strong>Choose an image</strong> or drag it here (optional)<br>
+            <small>JPEG only</small>
+          </div>
+          <input type="file" id="eph-file-input" accept=".jpg,.jpeg">
+        </div>
+
+        <div id="eph-preview" class="image-preview hidden">
+          <img id="eph-preview-img" alt="Preview">
+        </div>
+
+        <div style="margin-top: 8px;">
+          <button id="btn-add-ephemera" class="btn primary btn-sm">Add Entry</button>
+        </div>
+        <div id="eph-error" class="error-msg hidden"></div>
+      </div>
+
+      <h3>Existing Entries</h3>
+      <div id="ephemera-list" class="ephemera-list"></div>
     </section>
 
     <!-- PUBLISH SECTION -->
