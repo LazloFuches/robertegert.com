@@ -10,3 +10,95 @@
 
 # Old projects index (replaced by catalogue)
 /projects/ /catalogue/ 301
+
+# Old WordPress structural URLs
+/page/* / 301
+/category/* /catalogue/ 301
+/tag/* /catalogue/ 301
+/author/* /bio/ 301
+/index.php / 301
+/wp-content/* / 301
+/widget/ / 301
+
+# Old WordPress artwork pages with known matches
+/moonlight/ /projects/nocturnes/3/ 301
+/incomplete-description/ /projects/nocturnes/1/ 301
+/inversion/ /projects/gothic-interiors/1/ 301
+/old-town/ /projects/preparatory-academy/10/ 301
+/crossing-the-cecina/ /projects/preparatory-academy/6/ 301
+/towers/ /projects/bonsai-garden/6/ 301
+/figures/ /projects/anthropocene/5/ 301
+
+# Old WordPress artwork pages (no direct equivalent)
+/the-idea-in-itself/ /catalogue/ 301
+/small-painting/ /catalogue/ 301
+/arrive-815/ /catalogue/ 301
+/lento-con-riserva/ /catalogue/ 301
+/reversal-agent/ /catalogue/ 301
+/napoleonica/ /catalogue/ 301
+/night-sea/ /catalogue/ 301
+/landscape-with-sun-and-fog/ /catalogue/ 301
+/landscape-with-three-suns/ /catalogue/ 301
+/sigil-2/ /catalogue/ 301
+/warm-inside/ /catalogue/ 301
+/dark-sea-fantasy/ /catalogue/ 301
+/two-paintings-installed-as-a-pair/ /catalogue/ 301
+/untitled-entanglements/ /catalogue/ 301
+/holon-fantasy/ /catalogue/ 301
+/flaming-castle/ /catalogue/ 301
+/unbuilt-small-museum/ /catalogue/ 301
+/some-things/ /catalogue/ 301
+/industrial-production/ /catalogue/ 301
+/seven-distant-suns-2/ /catalogue/ 301
+/untitled-2/ /catalogue/ 301
+/cliff-painting-no-8/ /catalogue/ 301
+/apparition/ /catalogue/ 301
+/invasive-thoughts/ /catalogue/ 301
+/cliff-painting-no-3/ /catalogue/ 301
+/woman-2/ /catalogue/ 301
+/seven-distant-suns/ /catalogue/ 301
+/brown-mars/ /catalogue/ 301
+/napoleonica-4/ /catalogue/ 301
+/cryptic-anchor/ /catalogue/ 301
+/will-rescheduled/ /catalogue/ 301
+/l-e-s-1979/ /catalogue/ 301
+/nocturnes/ /catalogue/ 301
+/no-pilot-2/ /catalogue/ 301
+/autophagia/ /catalogue/ 301
+/tempera-june-25/ /catalogue/ 301
+/danse-enkantasyon/ /catalogue/ 301
+/untitled-figure/ /catalogue/ 301
+/4266-2/ /catalogue/ 301
+/2105/ /catalogue/ 301
+/tempera-june-25-2013-4/ /catalogue/ 301
+/gravitas/ /catalogue/ 301
+/untitled-figures/ /catalogue/ 301
+/compound/ /catalogue/ 301
+/2120/ /catalogue/ 301
+/pendulum/ /catalogue/ 301
+/untitled/ /catalogue/ 301
+/tempera-june-25-2013-2/ /catalogue/ 301
+/ideogram-and-morphism-2/ /catalogue/ 301
+/cliffs-13/ /catalogue/ 301
+/asymmetric-body-armor/ /catalogue/ 301
+/fleeting-view/ /catalogue/ 301
+/woman-with-ams-clasped/ /catalogue/ 301
+/cnflgrtn/ /catalogue/ 301
+/sigil-3/ /catalogue/ 301
+/bivalve/ /catalogue/ 301
+/4246-2/ /catalogue/ 301
+/oceanic/ /catalogue/ 301
+/trap-house-nearby/ /catalogue/ 301
+/5340-2/ /catalogue/ 301
+/knot/ /catalogue/ 301
+/idea/ /catalogue/ 301
+/salwe/ /catalogue/ 301
+/dionysus-of-medicine/ /catalogue/ 301
+/cold-painting-for-a-hot-night/ /catalogue/ 301
+/elbow-on-knee/ /catalogue/ 301
+
+# Old WordPress attachment pages
+/untitled-2/stool06/ /catalogue/ 301
+/unbuilt-the-attic/unbuilt01/ /catalogue/ 301
+/anthropocene-exhibition/opening-02/ /ephemera/ 301
+/anthropocene-exhibition/opening-03/ /ephemera/ 301
