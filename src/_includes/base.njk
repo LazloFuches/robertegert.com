@@ -122,7 +122,7 @@
         <a href="/contact/"{% if '/contact' in page.url %} class="footer-active"{% endif %}>Contact</a>
       </div>
       <div class="footer-col footer-col--projects">
-        <span class="footer-heading">Catalogue</span>
+        <a href="/catalogue/" class="footer-heading{% if '/catalogue' in page.url %} footer-active{% endif %}">Catalogue</a>
         <div class="footer-projects-grid">
           <a href="/current-work/"{% if '/current-work' in page.url %} class="footer-active"{% endif %}>Current Work</a>
           {%- for project in projects %}
