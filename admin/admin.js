@@ -1,5 +1,7 @@
 let password = '';
+let authToken = null;
 let currentProjectSlug = null;
+const isProduction = !['localhost', '127.0.0.1'].includes(location.hostname);
 
 function esc(text) {
   const div = document.createElement('div');
@@ -7,10 +9,15 @@ function esc(text) {
   return div.innerHTML;
 }
 
+function authHeaders() {
+  if (authToken) return { 'Authorization': `Bearer ${authToken}` };
+  return { 'X-Admin-Password': password };
+}
+
 async function api(method, path, body) {
   const opts = {
     method,
-    headers: { 'Content-Type': 'application/json', 'X-Admin-Password': password },
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
   };
   if (body && method !== 'GET') opts.body = JSON.stringify(body);
   const res = await fetch(`/api${path}`, opts);
@@ -39,11 +46,22 @@ document.getElementById('password-input').addEventListener('keydown', (e) => {
 async function tryLogin() {
   password = document.getElementById('password-input').value;
   try {
+    if (isProduction) {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      if (!res.ok) throw new Error('Invalid password');
+      const data = await res.json();
+      authToken = data.token;
+    }
     await api('GET', '/projects');
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('admin-app').classList.remove('hidden');
     loadProjects();
   } catch {
+    authToken = null;
     document.getElementById('login-error').textContent = 'Incorrect password';
     document.getElementById('login-error').classList.remove('hidden');
   }
@@ -170,15 +188,43 @@ document.getElementById('image-upload').addEventListener('change', async (e) => 
 
   for (const file of files) {
     try {
-      const res = await fetch(`/api/upload/${currentProjectSlug}?filename=${encodeURIComponent(file.name)}`, {
-        method: 'POST',
-        headers: { 'X-Admin-Password': password },
-        body: file,
-      });
-      const result = await res.json();
-      if (result.path) toast(`Uploaded: ${file.name}`);
+      let result;
+      if (isProduction) {
+        const title = prompt(`Title for "${file.name}":`);
+        if (title === null) continue;
+        const formData = new FormData();
+        formData.append('image', file);
+        formData.append('metadata', JSON.stringify({
+          title: title || '',
+          medium: '',
+          dimensions: '',
+          date: '',
+          collection: '',
+        }));
+        const res = await fetch(`/api/upload/${currentProjectSlug}`, {
+          method: 'POST',
+          headers: authHeaders(),
+          body: formData,
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.error || 'Upload failed');
+        }
+        result = await res.json();
+      } else {
+        const res = await fetch(`/api/upload/${currentProjectSlug}?filename=${encodeURIComponent(file.name)}`, {
+          method: 'POST',
+          headers: { 'X-Admin-Password': password },
+          body: file,
+        });
+        result = await res.json();
+      }
+      if (result.ok) {
+        toast(`Uploaded: ${file.name}`);
+        openProjectEditor(currentProjectSlug);
+      }
     } catch (err) {
-      toast(`Upload failed: ${file.name}`);
+      toast(`Upload failed: ${err.message}`);
     }
   }
   e.target.value = '';
