@@ -36,8 +36,14 @@ ogImage: "/assets/images/small-worlds/17.jpg"
     </div>
     <div class="hero-bottom">
       <div class="hero-caption">
-        <span class="hero-caption-title">{{ collections.currentWorkArtworks[0].title }}</span>
-        <span class="hero-caption-details">from {{ currentProject.title }}, 2024&ndash;2026, {{ currentProject.count }} works</span>
+        {%- set featuredTitle = "" %}
+        {%- for artwork in collections.currentWorkArtworks %}
+          {%- if artwork.src == currentProject.thumbnail %}
+            {%- set featuredTitle = artwork.title %}
+          {%- endif %}
+        {%- endfor %}
+        <span class="hero-caption-title">{{ featuredTitle }}</span>
+        <span class="hero-caption-details">from {{ currentProject.title }}, {{ currentProject.count }} works</span>
       </div>
       <a href="/current-work/" class="hero-link">View Current Work</a>
     </div>
