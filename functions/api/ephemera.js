@@ -88,7 +88,7 @@ export async function onRequestPost({ request, env }) {
     const newYear = extractYear(date);
     let insertIndex = 0;
     for (let i = 0; i < ephemera.length; i++) {
-      if (extractYear(ephemera[i].date) >= newYear) {
+      if (extractYear(ephemera[i].date) > newYear) {
         insertIndex = i + 1;
       } else {
         break;
