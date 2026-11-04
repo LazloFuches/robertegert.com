@@ -211,18 +211,17 @@
 
         <div id="eph-drop-zone" class="drop-zone">
           <div class="drop-zone-text">
-            <strong>Choose an image</strong> or drag it here (optional)<br>
-            <small>JPEG only</small>
+            <strong>Choose images</strong> or drag them here (optional)<br>
+            <small>JPEG only, multiple allowed</small>
           </div>
-          <input type="file" id="eph-file-input" accept=".jpg,.jpeg">
+          <input type="file" id="eph-file-input" accept=".jpg,.jpeg" multiple>
         </div>
 
-        <div id="eph-preview" class="image-preview hidden">
-          <img id="eph-preview-img" alt="Preview">
-        </div>
+        <div id="eph-preview" class="eph-preview-grid hidden"></div>
 
-        <div style="margin-top: 8px;">
+        <div style="margin-top: 8px; display: flex; gap: 8px;">
           <button id="btn-add-ephemera" class="btn primary btn-sm">Add Entry</button>
+          <button id="btn-cancel-ephemera" class="btn btn-sm">Cancel</button>
         </div>
         <div id="eph-error" class="error-msg hidden"></div>
       </div>

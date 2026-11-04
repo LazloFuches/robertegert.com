@@ -22,7 +22,7 @@ export async function onRequestGet({ env }) {
 export async function onRequestPost({ request, env }) {
   try {
     const formData = await request.formData();
-    const image = formData.get('image');
+    const images = formData.getAll('images');
     const title = formData.get('title');
     const type = formData.get('type');
     const date = formData.get('date');
@@ -41,32 +41,37 @@ export async function onRequestPost({ request, env }) {
     const gallery = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
     const changes = [];
-    let imageSrc = null;
+    const imagePaths = [];
 
-    if (image && image.size > 0) {
+    const validImages = images.filter(img => img && img.size > 0);
+    if (validImages.length > 0) {
       const files = await listDirectory(env, 'src/assets/images/ephemera', 'dev');
       const numbered = files
         .filter(f => f.type === 'file' && /^\d{2}\.jpg$/.test(f.name))
         .map(f => parseInt(f.name, 10));
-      const next = (numbered.length > 0 ? Math.max(...numbered) : 0) + 1;
-      const filename = String(next).padStart(2, '0') + '.jpg';
-      imageSrc = `/assets/images/ephemera/${filename}`;
+      let next = (numbered.length > 0 ? Math.max(...numbered) : 0) + 1;
 
-      const buf = await image.arrayBuffer();
-      const base64 = btoa(String.fromCharCode(...new Uint8Array(buf)));
+      for (const image of validImages) {
+        const filename = String(next).padStart(2, '0') + '.jpg';
+        imagePaths.push(`/assets/images/ephemera/${filename}`);
 
-      changes.push({
-        path: `src/assets/images/ephemera/${filename}`,
-        content: base64,
-        encoding: 'base64',
-      });
+        const buf = await image.arrayBuffer();
+        const base64 = btoa(String.fromCharCode(...new Uint8Array(buf)));
+
+        changes.push({
+          path: `src/assets/images/ephemera/${filename}`,
+          content: base64,
+          encoding: 'base64',
+        });
+        next++;
+      }
     }
 
     const entry = {
       type,
       title,
       date,
-      images: imageSrc ? [imageSrc] : [],
+      images: imagePaths,
       gallery,
       description: description || title,
       alt: title,
@@ -93,7 +98,7 @@ export async function onRequestPost({ request, env }) {
 
     await createAtomicCommit(env, 'dev', changes, `Add ephemera "${title}" via admin`);
 
-    return new Response(JSON.stringify({ ok: true, imagePath: imageSrc }), {
+    return new Response(JSON.stringify({ ok: true, imagePaths: imagePaths }), {
       status: 201,
       headers: { 'Content-Type': 'application/json' },
     });

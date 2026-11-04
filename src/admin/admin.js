@@ -5,7 +5,7 @@
   var projects = [];
   var currentDetail = null;
   var selectedFile = null;
-  var ephemeraFile = null;
+  var ephemeraFiles = [];
   var ephemeraData = [];
 
   // --- API ---
@@ -582,27 +582,72 @@
     zone.addEventListener('drop', function (e) {
       e.preventDefault();
       zone.classList.remove('drag-over');
-      if (e.dataTransfer.files.length) handleEphemeraFile(e.dataTransfer.files[0]);
+      if (e.dataTransfer.files.length) handleEphemeraFiles(e.dataTransfer.files);
     });
     input.addEventListener('change', function () {
-      if (input.files.length) handleEphemeraFile(input.files[0]);
+      if (input.files.length) handleEphemeraFiles(input.files);
+    });
+
+    document.getElementById('btn-cancel-ephemera').addEventListener('click', resetEphemeraForm);
+  }
+
+  function handleEphemeraFiles(files) {
+    var skipped = 0;
+    var tooLarge = 0;
+    for (var i = 0; i < files.length; i++) {
+      if (!files[i].type.match(/^image\/jpe?g$/)) {
+        skipped++;
+        continue;
+      }
+      if (files[i].size > 1 * 1024 * 1024) {
+        tooLarge++;
+        continue;
+      }
+      ephemeraFiles.push(files[i]);
+    }
+    if (skipped > 0) toast(skipped + ' non-JPEG file(s) skipped', 'error');
+    if (tooLarge > 0) toast(tooLarge + ' file(s) exceeded 1 MB limit', 'error');
+    renderEphemeraPreview();
+  }
+
+  function renderEphemeraPreview() {
+    var preview = document.getElementById('eph-preview');
+    preview.innerHTML = '';
+    if (ephemeraFiles.length === 0) {
+      preview.classList.add('hidden');
+      return;
+    }
+    preview.classList.remove('hidden');
+    ephemeraFiles.forEach(function (file, idx) {
+      var wrap = document.createElement('div');
+      wrap.className = 'eph-preview-item';
+      var img = document.createElement('img');
+      img.alt = 'Preview ' + (idx + 1);
+      var reader = new FileReader();
+      reader.onload = function (e) { img.src = e.target.result; };
+      reader.readAsDataURL(file);
+      wrap.appendChild(img);
+      var removeBtn = document.createElement('button');
+      removeBtn.className = 'eph-preview-remove';
+      removeBtn.textContent = '×';
+      removeBtn.addEventListener('click', function () {
+        ephemeraFiles.splice(idx, 1);
+        renderEphemeraPreview();
+      });
+      wrap.appendChild(removeBtn);
+      preview.appendChild(wrap);
     });
   }
 
-  function handleEphemeraFile(file) {
-    if (!file.type.match(/^image\/jpe?g$/)) {
-      toast('Please select a JPEG image', 'error');
-      return;
-    }
-    ephemeraFile = file;
-    var preview = document.getElementById('eph-preview');
-    var img = document.getElementById('eph-preview-img');
-    var reader = new FileReader();
-    reader.onload = function (e) {
-      img.src = e.target.result;
-      preview.classList.remove('hidden');
-    };
-    reader.readAsDataURL(file);
+  function resetEphemeraForm() {
+    document.getElementById('eph-title').value = '';
+    document.getElementById('eph-type').selectedIndex = 0;
+    document.getElementById('eph-date').value = '';
+    document.getElementById('eph-description').value = '';
+    document.getElementById('eph-file-input').value = '';
+    document.getElementById('eph-error').classList.add('hidden');
+    ephemeraFiles = [];
+    renderEphemeraPreview();
   }
 
   function loadEphemera() {
@@ -665,17 +710,14 @@
     form.append('type', type);
     form.append('date', date);
     form.append('description', description);
-    if (ephemeraFile) form.append('image', ephemeraFile);
+    ephemeraFiles.forEach(function (file) {
+      form.append('images', file);
+    });
 
     api('POST', '/ephemera', form)
     .then(function () {
       toast('Ephemera entry added', 'success');
-      document.getElementById('eph-title').value = '';
-      document.getElementById('eph-date').value = '';
-      document.getElementById('eph-description').value = '';
-      document.getElementById('eph-file-input').value = '';
-      document.getElementById('eph-preview').classList.add('hidden');
-      ephemeraFile = null;
+      resetEphemeraForm();
       loadEphemera();
     })
     .catch(function (e) {
