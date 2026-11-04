@@ -56,7 +56,12 @@ export async function onRequestPost({ request, env }) {
         imagePaths.push(`/assets/images/ephemera/${filename}`);
 
         const buf = await image.arrayBuffer();
-        const base64 = btoa(String.fromCharCode(...new Uint8Array(buf)));
+        const bytes = new Uint8Array(buf);
+        let binary = '';
+        for (let j = 0; j < bytes.length; j += 8192) {
+          binary += String.fromCharCode.apply(null, bytes.subarray(j, j + 8192));
+        }
+        const base64 = btoa(binary);
 
         changes.push({
           path: `src/assets/images/ephemera/${filename}`,
