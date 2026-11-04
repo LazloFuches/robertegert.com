@@ -16,6 +16,24 @@
     "externalLink": "https://praxisottawa.ca"
   },
   {
+    "type": "Photograph",
+    "title": "Studio View",
+    "date": "Rectory Art House 2026",
+    "images": [
+      "/assets/images/ephemera/84.jpg",
+      "/assets/images/ephemera/85.jpg",
+      "/assets/images/ephemera/86.jpg"
+    ],
+    "gallery": "studio-view",
+    "description": "Studio photographs from The Rectory ARt House, Ottawa, 2026",
+    "alt": "Studio View",
+    "text": [
+      "Studio photographs from The Rectory ARt House, Ottawa, 2026"
+    ],
+    "download": null,
+    "externalLink": null
+  },
+  {
     "type": "Announcement",
     "title": "Other Natures",
     "date": "Rockland Center for the Arts, 2025",
@@ -50,7 +68,7 @@
   },
   {
     "type": "Announcement",
-    "title": "Other Life Forms — Closing",
+    "title": "Other Life Forms â Closing",
     "date": "Garner Arts Center, 2024",
     "images": [
       "/assets/images/ephemera/other-life-forms-closing.jpg"
@@ -66,7 +84,7 @@
   },
   {
     "type": "Announcement",
-    "title": "Other Life Forms — Opening",
+    "title": "Other Life Forms â Opening",
     "date": "Garner Arts Center, 2023",
     "images": [
       "/assets/images/ephemera/instagram-w-artists-names.jpg"
