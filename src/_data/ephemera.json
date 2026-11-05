@@ -1,5 +1,21 @@
 [
   {
+    "type": "Poster",
+    "title": "Open Studios 2026",
+    "date": "2026",
+    "images": [
+      "/assets/images/ephemera/87.jpg"
+    ],
+    "gallery": "open-studios-2026",
+    "description": "Announcement for The Rectory House Open Studios",
+    "alt": "Open Studios 2026",
+    "text": [
+      "Announcement for The Rectory House Open Studios"
+    ],
+    "download": null,
+    "externalLink": null
+  },
+  {
     "type": "Photograph",
     "title": "Praxis",
     "date": "Studio Space Ottawa, 2026",
@@ -68,7 +84,7 @@
   },
   {
     "type": "Announcement",
-    "title": "Other Life Forms â Closing",
+    "title": "Other Life Forms Ã¢ÂÂ Closing",
     "date": "Garner Arts Center, 2024",
     "images": [
       "/assets/images/ephemera/other-life-forms-closing.jpg"
@@ -84,7 +100,7 @@
   },
   {
     "type": "Announcement",
-    "title": "Other Life Forms â Opening",
+    "title": "Other Life Forms Ã¢ÂÂ Opening",
     "date": "Garner Arts Center, 2023",
     "images": [
       "/assets/images/ephemera/instagram-w-artists-names.jpg"
