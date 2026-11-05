@@ -230,6 +230,70 @@
       <div id="ephemera-list" class="ephemera-list"></div>
     </section>
 
+    <!-- EPHEMERA DETAIL SECTION -->
+    <section id="sec-ephemera-detail" class="section hidden">
+      <div class="detail-back">
+        <a href="#" id="btn-back-to-ephemera">&larr; Back to Ephemera</a>
+      </div>
+
+      <div class="collection-meta-form">
+        <div class="field-row">
+          <div class="field">
+            <label>Type</label>
+            <select id="eph-detail-type">
+              <option>Announcement</option>
+              <option>Photograph</option>
+              <option>Installation Photo</option>
+              <option>Feature</option>
+              <option>Catalogue</option>
+              <option>Essay</option>
+              <option>Review</option>
+              <option>Press Release</option>
+              <option>Profile</option>
+              <option>Interview</option>
+              <option>Poster</option>
+            </select>
+          </div>
+          <div class="field" style="flex:2">
+            <label>Title</label>
+            <input type="text" id="eph-detail-title">
+          </div>
+        </div>
+        <div class="field">
+          <label>Date</label>
+          <input type="text" id="eph-detail-date">
+        </div>
+        <div class="field">
+          <label>Description</label>
+          <textarea id="eph-detail-description" rows="3"></textarea>
+        </div>
+        <div class="field">
+          <label>External Link</label>
+          <input type="text" id="eph-detail-link" placeholder="https://...">
+        </div>
+        <div class="form-actions">
+          <button id="btn-save-ephemera-meta" class="btn primary btn-sm">Save Details</button>
+          <button id="btn-remove-ephemera" class="btn danger btn-sm">Remove Entry</button>
+        </div>
+      </div>
+
+      <h3 id="eph-detail-image-heading">Images</h3>
+      <div id="eph-detail-images" class="detail-images"></div>
+
+      <div class="eph-add-images-section">
+        <h3>Add Images</h3>
+        <div id="eph-detail-drop-zone" class="drop-zone">
+          <div class="drop-zone-text">
+            <strong>Choose images</strong> or drag them here<br>
+            <small>JPEG only, max 1 MB each</small>
+          </div>
+          <input type="file" id="eph-detail-file-input" accept=".jpg,.jpeg" multiple>
+        </div>
+        <div id="eph-detail-preview" class="eph-preview-grid hidden"></div>
+        <button id="btn-upload-ephemera-images" class="btn primary btn-sm" disabled>Upload Images</button>
+      </div>
+    </section>
+
     <!-- PUBLISH SECTION -->
     <section id="sec-publish" class="section hidden">
       <div class="section-header">

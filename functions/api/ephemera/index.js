@@ -1,4 +1,4 @@
-import { getFile, listDirectory, createAtomicCommit } from '../_lib/github.js';
+import { getFile, listDirectory, createAtomicCommit } from '../../_lib/github.js';
 
 function extractYear(dateStr) {
   const match = dateStr.match(/\b(\d{4})\b/);

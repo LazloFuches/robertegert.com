@@ -7,6 +7,9 @@
   var selectedFile = null;
   var ephemeraFiles = [];
   var ephemeraData = [];
+  var currentEphemera = null;
+  var currentEphemeraIndex = -1;
+  var ephemeraDetailFiles = [];
 
   // --- API ---
 
@@ -110,6 +113,19 @@
       b.classList.toggle('active', b.dataset.section === 'collections');
     });
     loadCollectionDetail(slug);
+  }
+
+  function showEphemeraDetail(index) {
+    document.querySelectorAll('.section').forEach(function (s) {
+      s.classList.add('hidden');
+    });
+    document.getElementById('sec-ephemera-detail').classList.remove('hidden');
+    document.querySelectorAll('.nav-btn').forEach(function (b) {
+      b.classList.toggle('active', b.dataset.section === 'ephemera');
+    });
+    currentEphemeraIndex = index;
+    currentEphemera = ephemeraData[index];
+    renderEphemeraDetail();
   }
 
   // --- Projects/Collections ---
@@ -663,7 +679,7 @@
     var container = document.getElementById('ephemera-list');
     container.innerHTML = '';
 
-    ephemeraData.forEach(function (item) {
+    ephemeraData.forEach(function (item, i) {
       var div = document.createElement('div');
       div.className = 'ephemera-item';
 
@@ -683,7 +699,215 @@
         '<div class="ephemera-item-meta">' + esc(item.type || '') + ' &middot; ' + esc(item.date || '') + '</div>';
       div.appendChild(info);
 
+      div.addEventListener('click', (function (idx) {
+        return function () { showEphemeraDetail(idx); };
+      })(i));
+
       container.appendChild(div);
+    });
+  }
+
+  function renderEphemeraDetail() {
+    var e = currentEphemera;
+    document.getElementById('eph-detail-title').value = e.title || '';
+    document.getElementById('eph-detail-type').value = e.type || 'Photograph';
+    document.getElementById('eph-detail-date').value = e.date || '';
+    document.getElementById('eph-detail-description').value = e.description || '';
+    document.getElementById('eph-detail-link').value = e.externalLink || '';
+
+    var heading = document.getElementById('eph-detail-image-heading');
+    var images = e.images || [];
+    heading.textContent = 'Images (' + images.length + ')';
+
+    var container = document.getElementById('eph-detail-images');
+    container.innerHTML = '';
+
+    if (images.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-light);font-size:14px;">No images. Use the drop zone below to add some.</p>';
+    } else {
+      images.forEach(function (src, i) {
+        var card = document.createElement('div');
+        card.className = 'image-card';
+
+        var thumbEl = document.createElement('img');
+        thumbEl.className = 'image-card-thumb';
+        thumbEl.src = src;
+        thumbEl.alt = e.title || '';
+        thumbEl.onerror = function () { this.src = '/assets/images/placeholder.jpg'; };
+
+        var body = document.createElement('div');
+        body.className = 'image-card-body';
+        body.innerHTML =
+          '<div class="image-card-title">' + esc(src.split('/').pop()) + '</div>' +
+          '<div class="image-card-meta">' + esc(src) + '</div>';
+
+        var actions = document.createElement('div');
+        actions.className = 'image-card-actions';
+
+        var removeBtn = document.createElement('button');
+        removeBtn.className = 'btn danger btn-sm';
+        removeBtn.textContent = 'Remove';
+        removeBtn.onclick = (function (imgSrc) {
+          return function () { removeEphemeraImage(imgSrc); };
+        })(src);
+
+        actions.appendChild(removeBtn);
+        body.appendChild(actions);
+        card.appendChild(thumbEl);
+        card.appendChild(body);
+        container.appendChild(card);
+      });
+    }
+
+    ephemeraDetailFiles = [];
+    var preview = document.getElementById('eph-detail-preview');
+    preview.innerHTML = '';
+    preview.classList.add('hidden');
+    document.getElementById('eph-detail-file-input').value = '';
+    document.getElementById('btn-upload-ephemera-images').disabled = true;
+  }
+
+  function saveEphemeraMeta() {
+    var updates = {
+      title: document.getElementById('eph-detail-title').value.trim(),
+      type: document.getElementById('eph-detail-type').value,
+      date: document.getElementById('eph-detail-date').value.trim(),
+      description: document.getElementById('eph-detail-description').value.trim(),
+      externalLink: document.getElementById('eph-detail-link').value.trim(),
+    };
+
+    if (!updates.title || !updates.date) {
+      toast('Title and date are required', 'error');
+      return;
+    }
+
+    api('PUT', '/ephemera/' + currentEphemeraIndex, updates)
+    .then(function (res) {
+      currentEphemera = res.entry;
+      ephemeraData[currentEphemeraIndex] = res.entry;
+      renderEphemeraDetail();
+      toast('Ephemera details saved', 'success');
+    })
+    .catch(function (e) { toast('Failed to save: ' + e.message, 'error'); });
+  }
+
+  function removeEphemeraEntry() {
+    if (!confirm('Remove "' + (currentEphemera.title || 'this entry') + '" and all its images? This cannot be undone.')) return;
+
+    var btn = document.getElementById('btn-remove-ephemera');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Removing...';
+
+    api('DELETE', '/ephemera/' + currentEphemeraIndex)
+    .then(function () {
+      toast('Entry removed', 'success');
+      loadEphemera();
+      switchSection('ephemera');
+    })
+    .catch(function (e) { toast('Failed to remove: ' + e.message, 'error'); })
+    .then(function () {
+      btn.disabled = false;
+      btn.textContent = 'Remove Entry';
+    });
+  }
+
+  function removeEphemeraImage(src) {
+    if (!confirm('Remove this image? This cannot be undone.')) return;
+
+    api('DELETE', '/ephemera/' + currentEphemeraIndex + '/image', { src: src })
+    .then(function () {
+      currentEphemera.images = (currentEphemera.images || []).filter(function (s) { return s !== src; });
+      ephemeraData[currentEphemeraIndex] = currentEphemera;
+      renderEphemeraDetail();
+      toast('Image removed', 'success');
+    })
+    .catch(function (e) { toast('Failed to remove image: ' + e.message, 'error'); });
+  }
+
+  function setupEphemeraDetailDropZone() {
+    var zone = document.getElementById('eph-detail-drop-zone');
+    var input = document.getElementById('eph-detail-file-input');
+
+    zone.addEventListener('click', function () { input.click(); });
+    zone.addEventListener('dragover', function (e) { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', function () { zone.classList.remove('drag-over'); });
+    zone.addEventListener('drop', function (e) {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      if (e.dataTransfer.files.length) handleEphemeraDetailFiles(e.dataTransfer.files);
+    });
+    input.addEventListener('change', function () {
+      if (input.files.length) handleEphemeraDetailFiles(input.files);
+    });
+  }
+
+  function handleEphemeraDetailFiles(files) {
+    var skipped = 0;
+    var tooLarge = 0;
+    for (var i = 0; i < files.length; i++) {
+      if (!files[i].type.match(/^image\/jpe?g$/)) { skipped++; continue; }
+      if (files[i].size > 1 * 1024 * 1024) { tooLarge++; continue; }
+      ephemeraDetailFiles.push(files[i]);
+    }
+    if (skipped > 0) toast(skipped + ' non-JPEG file(s) skipped', 'error');
+    if (tooLarge > 0) toast(tooLarge + ' file(s) exceeded 1 MB limit', 'error');
+    renderEphemeraDetailPreview();
+  }
+
+  function renderEphemeraDetailPreview() {
+    var preview = document.getElementById('eph-detail-preview');
+    preview.innerHTML = '';
+    if (ephemeraDetailFiles.length === 0) {
+      preview.classList.add('hidden');
+      document.getElementById('btn-upload-ephemera-images').disabled = true;
+      return;
+    }
+    preview.classList.remove('hidden');
+    document.getElementById('btn-upload-ephemera-images').disabled = false;
+    ephemeraDetailFiles.forEach(function (file, idx) {
+      var wrap = document.createElement('div');
+      wrap.className = 'eph-preview-item';
+      var img = document.createElement('img');
+      img.alt = 'Preview ' + (idx + 1);
+      var reader = new FileReader();
+      reader.onload = function (e) { img.src = e.target.result; };
+      reader.readAsDataURL(file);
+      wrap.appendChild(img);
+      var removeBtn = document.createElement('button');
+      removeBtn.className = 'eph-preview-remove';
+      removeBtn.textContent = '×';
+      removeBtn.addEventListener('click', function () {
+        ephemeraDetailFiles.splice(idx, 1);
+        renderEphemeraDetailPreview();
+      });
+      wrap.appendChild(removeBtn);
+      preview.appendChild(wrap);
+    });
+  }
+
+  function uploadEphemeraDetailImages() {
+    if (ephemeraDetailFiles.length === 0) return;
+
+    var btn = document.getElementById('btn-upload-ephemera-images');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Uploading...';
+
+    var form = new FormData();
+    ephemeraDetailFiles.forEach(function (file) {
+      form.append('images', file);
+    });
+
+    api('POST', '/ephemera/' + currentEphemeraIndex + '/image', form)
+    .then(function (res) {
+      currentEphemera.images = (currentEphemera.images || []).concat(res.imagePaths);
+      ephemeraData[currentEphemeraIndex] = currentEphemera;
+      renderEphemeraDetail();
+      toast(res.imagePaths.length + ' image(s) added', 'success');
+    })
+    .catch(function (e) { toast('Failed to upload: ' + e.message, 'error'); })
+    .then(function () {
+      btn.disabled = false;
+      btn.textContent = 'Upload Images';
     });
   }
 
@@ -845,6 +1069,16 @@
     setupNewCollectionForm();
     setupEphemeraDropZone();
     document.getElementById('btn-add-ephemera').addEventListener('click', handleEphemeraSubmit);
+
+    document.getElementById('btn-back-to-ephemera').addEventListener('click', function (e) {
+      e.preventDefault();
+      loadEphemera();
+      switchSection('ephemera');
+    });
+    document.getElementById('btn-save-ephemera-meta').addEventListener('click', saveEphemeraMeta);
+    document.getElementById('btn-remove-ephemera').addEventListener('click', removeEphemeraEntry);
+    setupEphemeraDetailDropZone();
+    document.getElementById('btn-upload-ephemera-images').addEventListener('click', uploadEphemeraDetailImages);
 
     if (token) {
       showApp();
